@@ -1,0 +1,41 @@
+image: docker:stable
+
+variables:
+  http_proxy: ""
+  https_proxy: ""
+  no_proxy: ""
+
+stages:
+  - build
+
+.master: &master
+  only:
+    refs:
+      - master
+
+.with-docker: &with-docker
+  services:
+    - docker:dind
+  before_script:
+    - docker login -u gitlab-ci-token -p "$CI_JOB_TOKEN" "$CI_REGISTRY"
+  script: /bin/true
+
+build&push dev:
+  <<: *master
+  stage: build
+  tags:
+    - docker-build
+  <<: *with-docker
+  script:
+    - docker pull $CI_REGISTRY_IMAGE:latest || true
+    - docker tag $CI_REGISTRY_IMAGE:latest $CI_REGISTRY_IMAGE:stable || true
+    - docker rmi $CI_REGISTRY_IMAGE:latest || true
+    - >
+      docker build
+      --pull
+      --cache-from $CI_REGISTRY_IMAGE:stable
+      --tag $CI_REGISTRY_IMAGE:latest
+      .
+    - docker push $CI_REGISTRY_IMAGE:stable || true
+    - docker push $CI_REGISTRY_IMAGE:latest
+  allow_failure: false
