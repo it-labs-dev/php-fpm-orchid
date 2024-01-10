@@ -8,7 +8,7 @@ variables:
 stages:
   - build
 
-.master: &master
+.main: &main
   only:
     refs:
       - main
@@ -21,7 +21,7 @@ stages:
   script: /bin/true
 
 build&push dev:
-  <<: *master
+  <<: *main
   stage: build
   tags:
     - docker-build
