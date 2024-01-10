@@ -11,7 +11,7 @@ stages:
 .master: &master
   only:
     refs:
-      - master
+      - main
 
 .with-docker: &with-docker
   services:

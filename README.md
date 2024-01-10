@@ -1,4 +1,4 @@
-# php-fpm-base
+# php-fpm
 
 Basic php-fpm image, for building apps on top of it.
 
