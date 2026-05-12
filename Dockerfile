@@ -3,6 +3,8 @@ FROM php:8.2.1-fpm-alpine
 ENV COMPOSER_ALLOW_SUPERUSER=1
 ENV COMPOSER_MEMORY_LIMIT=-1
 
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+
 RUN apk update && \
     apk add --no-cache --virtual .build-deps $PHPIZE_DEPS \
         git \
@@ -19,6 +21,7 @@ RUN apk update && \
 	docker-php-ext-enable imagick && \
     pecl install -o -f redis && \
     docker-php-ext-enable redis && \
+    install-php-extensions grpc && \
 	#apk del .build-deps && \
     curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
