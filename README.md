@@ -17,6 +17,7 @@ Basic php-fpm image, for building apps on top of it.
 * sockets
 * redis
 * grpc
+* pcntl
 
 #### Software:
 * composers
