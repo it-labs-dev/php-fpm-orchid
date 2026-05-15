@@ -3,7 +3,7 @@
 Basic php-fpm image, for building apps on top of it.
 
 #### PHP version:
-8.2.1 alpine
+8.4 alpine
 
 ### Includes:
 #### Extensions:
